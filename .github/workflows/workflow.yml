@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Mypy Check
+        uses: jpetrucciani/mypy-check@0.930
+        with:
+          path: ./src/
+
+      - name: Black Check
+        uses: jpetrucciani/black-check@21.12b0
+        with:
+          path: ./src/
+
+      - name: Run flake8
+        uses: julianwachholz/flake8-action@v2
+        with:
+          checkName: "Flake8"
+          path: ./src/
+          plugins: flake8-spellcheck flake8-docstrings

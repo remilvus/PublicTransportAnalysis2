@@ -1,0 +1,10 @@
+this
+is
+flake8
+spellcheck
+whitelist
+
+add
+new
+words
+here
