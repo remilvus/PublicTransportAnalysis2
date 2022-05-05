@@ -3,5 +3,9 @@ mypy
 flake8
 flake8-docstrings
 flake8-spellcheck
+freezegun
+prometheus-client
 pytest
+requests
+types-requests
 gtfs-realtime-bindings
