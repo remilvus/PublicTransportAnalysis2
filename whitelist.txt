@@ -9,7 +9,12 @@ etags
 unittest
 utils
 getitem
-persistency
+joinpath
+isocalendar
+realtime
+pb2
+gtfs
+fromtimestamp
 
 downloader
 CRACOW
