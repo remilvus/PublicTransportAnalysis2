@@ -3,7 +3,7 @@ import pathlib
 import time
 from datetime import datetime
 
-from . import downloader, source, persistency
+from . import downloader, source, persistence
 
 
 def collect():
@@ -16,11 +16,12 @@ def collect():
     previous_time = datetime.now()
     while True:
         files = transit_source.request_files()
-        persistency.save_files(files=files, data_root=data_root)
+        persistence.save_files(
+            files=files, data_root=data_root, write_to_disk=persistence.write_to_disk
+        )
         delta_time = (datetime.now() - previous_time).total_seconds()
         time.sleep(max(0.0, sleeping_time - delta_time))
         previous_time = datetime.now()
-        print(files)
 
 
 if __name__ == "__main__":
