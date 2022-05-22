@@ -4,7 +4,21 @@ flake8
 spellcheck
 whitelist
 
-add
-new
-words
-here
+etag
+etags
+unittest
+utils
+getitem
+joinpath
+isocalendar
+realtime
+pb2
+gtfs
+fromtimestamp
+
+downloader
+CRACOW
+func
+pta
+ptc
+ptu
