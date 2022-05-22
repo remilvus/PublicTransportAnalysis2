@@ -7,24 +7,37 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ '3.8',  '3.10' ]
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Mypy Check
-        uses: jpetrucciani/mypy-check@0.930
+      - name: Set up Python
+        uses: actions/setup-python@v3
         with:
-          path: ./src/
+          python-version: ${{ matrix.python-version }}
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install .
 
-      - name: Black Check
-        uses: jpetrucciani/black-check@21.12b0
-        with:
-          path: ./src/
-
-      - name: Run flake8
-        uses: julianwachholz/flake8-action@v2
-        with:
-          checkName: "Flake8"
-          path: ./src/
-          plugins: flake8-spellcheck flake8-docstrings
+      - name: Run flake8 (check docstrings)
+        run:
+          flake8 ./src
+      - name: Run black
+        run: |
+          black --check ./src
+          black --check ./tests
+      - name: Run mypy
+        run: |
+          mypy --ignore-missing-imports ./src
+          mypy --ignore-missing-imports ./tests
+      - name: Run pytest
+        run:
+          pytest ./tests
