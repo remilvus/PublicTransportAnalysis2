@@ -21,7 +21,7 @@ CONTENT: Dict[ptc.data.TransitCategory, bytes] = {
 
 
 @pytest.fixture
-def transit_links():
+def transit_urls():
     return ptc.downloader.TransitUrls(
         static="static.zip",
         trip_updates="updates.pb",
@@ -31,7 +31,7 @@ def transit_links():
 
 
 @pytest.fixture
-def transit_downloader(transit_links):
+def transit_downloader(transit_urls):
     class Downloader(ptc.downloader.TransitDownloader):
         def _get_with_etag(
             self, url: str, category: data.TransitCategory
@@ -42,18 +42,18 @@ def transit_downloader(transit_links):
                 category=category,
             )
 
-    return Downloader(links=transit_links)
+    return Downloader(urls=transit_urls)
 
 
 @pytest.fixture
-def transit_downloader_no_files(transit_links):
+def transit_downloader_no_files(transit_urls):
     class Downloader(ptc.downloader.TransitDownloader):
         def _get_with_etag(
             self, url: str, category: data.TransitCategory
         ) -> Optional[data.TransitFile]:
             return None
 
-    return Downloader(links=transit_links)
+    return Downloader(urls=transit_urls)
 
 
 @pytest.fixture
@@ -80,8 +80,8 @@ def transit_source_no_files(call_handler, transit_downloader_no_files):
 
 
 @pytest.mark.parametrize("category", list(ptc.data.TransitCategory))
-def test_downloader_links(category, transit_links, transit_downloader):
-    """Test whether `TransitDownloader` uses correct links for downloading."""
+def test_downloader_urls(category, transit_urls, transit_downloader):
+    """Test whether `TransitDownloader` uses correct urls for downloading."""
     assert transit_downloader.get_file(category=category).content == CONTENT[category]
 
 
@@ -89,7 +89,7 @@ def test_source_no_files(transit_source_no_files):
     assert transit_source_no_files.request_files() == tuple()
 
 
-def test_source_request_files(transit_links, transit_source):
+def test_source_request_files(transit_urls, transit_source):
     files = transit_source.request_files()
     assert len(files) == 4
     assert {f.category for f in files} == set(ptc.data.TransitCategory)
@@ -98,8 +98,8 @@ def test_source_request_files(transit_links, transit_source):
 
 
 @pytest.mark.parametrize("category", list(ptc.data.TransitCategory))
-def test_etag_update(transit_links, category: ptc.data.TransitCategory):
-    downloader = ptc.downloader.TransitDownloader(links=transit_links)
+def test_etag_update(transit_urls, category: ptc.data.TransitCategory):
+    downloader = ptc.downloader.TransitDownloader(urls=transit_urls)
 
     expected_etag = str(category)
     with mock.patch(

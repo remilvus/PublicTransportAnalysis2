@@ -36,15 +36,15 @@ class TransitDownloader:
     GTFS files are downloaded only when their etags change.
     """
 
-    def __init__(self, links: TransitUrls):
-        self.links = links
+    def __init__(self, urls: TransitUrls):
+        self.urls = urls
         self._etags: Dict[data.TransitCategory, str] = {
             category: "" for category in data.TransitCategory
         }
 
     def get_file(self, category: data.TransitCategory):
         """Download GTFS file of type `category`."""
-        return self._get_with_etag(url=self.links[category], category=category)
+        return self._get_with_etag(url=self.urls[category], category=category)
 
     def _get_with_etag(
         self, url: str, category: data.TransitCategory
@@ -71,21 +71,22 @@ class TransitDownloader:
             )
 
 
-LINKS_BUS_CRACOW = TransitUrls(
+URLS_BUS_CRACOW = TransitUrls(
     static="https://gtfs.ztp.krakow.pl/GTFS_KRK_A.zip",
     vehicle_positions="https://gtfs.ztp.krakow.pl/VehiclePositions_A.pb",
     trip_updates="https://gtfs.ztp.krakow.pl/TripUpdates_A.pb",
     alerts="https://gtfs.ztp.krakow.pl/ServiceAlerts_A.pb",
 )
-LINKS_TRAM_CRACOW = TransitUrls(
+URLS_TRAM_CRACOW = TransitUrls(
     static="https://gtfs.ztp.krakow.pl/GTFS_KRK_T.zip",
     vehicle_positions="https://gtfs.ztp.krakow.pl/VehiclePositions_T.pb",
     trip_updates="https://gtfs.ztp.krakow.pl/TripUpdates_T.pb",
     alerts="https://gtfs.ztp.krakow.pl/ServiceAlerts_T.pb",
 )
-LINKS_LONDON = TransitUrls(
+URLS_LONDON = TransitUrls(
     static="https://www.londontransit.ca/gtfsfeed/google_transit.zip",
     vehicle_positions="http://gtfs.ltconline.ca/Vehicle/VehiclePositions.pb",
     trip_updates="http://gtfs.ltconline.ca/TripUpdate/TripUpdates.pb",
     alerts="http://gtfs.ltconline.ca/Alert/Alerts.pb",
 )
+URLS = {"KRK_A": URLS_BUS_CRACOW, "KRK_T": URLS_TRAM_CRACOW, "LON": URLS_LONDON}
