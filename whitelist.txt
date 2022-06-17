@@ -11,6 +11,7 @@ utils
 getitem
 joinpath
 isocalendar
+metavar
 realtime
 pb2
 gtfs
