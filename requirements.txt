@@ -9,3 +9,4 @@ pytest
 requests
 types-requests
 gtfs-realtime-bindings
+protobuf==3.20 # `gtfs-realtime-bindings` protos require this version. Version can be updated after the protos are regenerated.
