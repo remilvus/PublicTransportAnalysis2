@@ -3,5 +3,10 @@ mypy
 flake8
 flake8-docstrings
 flake8-spellcheck
+freezegun
+prometheus-client
 pytest
+requests
+types-requests
 gtfs-realtime-bindings
+protobuf==3.20 # `gtfs-realtime-bindings` protos require this version. Version can be updated after the protos are regenerated.
